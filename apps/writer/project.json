@@ -1,0 +1,82 @@
+{
+  "name": "writer",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/writer/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/writer",
+        "index": "apps/writer/src/index.html",
+        "baseHref": "/",
+        "main": "apps/writer/src/main.tsx",
+        "polyfills": "apps/writer/src/polyfills.ts",
+        "tsConfig": "apps/writer/tsconfig.app.json",
+        "assets": ["apps/writer/src/favicon.ico", "apps/writer/src/assets"],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/writer/src/environments/environment.ts",
+              "with": "apps/writer/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "writer:build",
+        "hmr": true,
+        "proxyConfig": "apps/writer/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "writer:build:development"
+        },
+        "production": {
+          "buildTarget": "writer:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/writer/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/writer"],
+      "options": {
+        "jestConfig": "apps/writer/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
